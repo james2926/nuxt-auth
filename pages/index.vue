@@ -22,16 +22,10 @@
 
   onMounted(() => {
     authStore.initializeFromLocalStorage()
-    // const loggedInStatus = localStorage.getItem('isLoggedIn');
-    // isLoggedIn.value = loggedInStatus === 'true'; // Correctly cast to boolean
-    // console.log("isLoggedIn => ", isLoggedIn.value);
   });
   
   const logout = () => {
     authStore.logout(); 
-    
-    // localStorage.setItem('isLoggedIn', 'false'); 
-    // isLoggedIn.value = false;
   }
   </script>
   

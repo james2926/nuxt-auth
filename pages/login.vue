@@ -48,8 +48,8 @@
       await authStore.login(username.value, password.value)
 
       const redirectPath = route.query.redirect || '/'
-      // window.location.reload();
       router.push(redirectPath)
+      // window.location.reload();
 
     } catch (error) {
       console.error('Login failed', error)

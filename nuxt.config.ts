@@ -12,6 +12,10 @@ export default defineNuxtConfig({
     '@/plugin/axios',
   ],
 
+  router: {
+    middleware: ['auth'],
+  },
+
   modules: [
     '@sidebase/nuxt-auth',
     '@pinia/nuxt',

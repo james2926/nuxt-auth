@@ -24,10 +24,6 @@ export const useAuthStore = defineStore('auth', {
         const storedRefreshToken = localStorage.getItem('refreshToken')
         const storedIsLoggedIn = localStorage.getItem('isLoggedIn')
 
-        console.log("storedAccessToken =>", storedAccessToken )
-        console.log("storedRefreshToken => ", storedRefreshToken)
-        console.log("storedIsLoggedIn => ", storedIsLoggedIn)
-
         if (storedAccessToken) this.accessToken = storedAccessToken
         if (storedRefreshToken) this.refreshToken = storedRefreshToken
         if (storedIsLoggedIn) this.isLoggedIn = JSON.parse(storedIsLoggedIn)
@@ -36,6 +32,7 @@ export const useAuthStore = defineStore('auth', {
 
     async login(username: string, password: string) {
       const config = useRuntimeConfig()
+
       const response = await axios.post(`${config.public.apiBaseUrl}/public/users/login`, {
         username,
         password,
