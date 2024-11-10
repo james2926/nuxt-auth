@@ -22,7 +22,7 @@ export default defineNuxtConfig({
     provider: {
       type: 'local',
       endpoints :{
-        signIn: { path: '/public/users/login', method: 'post' },
+        signIn: { path: 'public/users/login', method: 'post' },
       },
       token: {
         signInResponseTokenPointer: '/access_token',
@@ -37,7 +37,7 @@ export default defineNuxtConfig({
       },
       refresh: {
         isEnabled: true,
-        endpoint: { path: '/public/users/refresh', method: 'post' },
+        endpoint: { path: 'public/users/refresh', method: 'post' },
         refreshOnlyToken: true,
         token: {
           signInResponseRefreshTokenPointer: '/refresh-token',
