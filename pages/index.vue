@@ -18,7 +18,6 @@
   import { ref, onMounted } from 'vue';
   
   const authStore = useAuthStore()
-  // const isLoggedIn = ref(false);
 
   onMounted(() => {
     authStore.initializeFromLocalStorage()
@@ -30,7 +29,6 @@
   </script>
   
   <style scoped>
-  /* Center the content in the viewport */
   .vh-100 {
     height: 100vh;
   }
