@@ -47,6 +47,7 @@ export const useAuthStore = defineStore('auth', {
 
     async refresh() {
       const config = useRuntimeConfig()
+<<<<<<< HEAD
       try {
         const response = await axios.post(`${config.public.apiBaseUrl}/public/users/refresh`, {
           refresh_token: this.refreshToken,
@@ -61,6 +62,20 @@ export const useAuthStore = defineStore('auth', {
         this.logout() // Logout if the refresh token fails
         return false
       }
+=======
+      const response = await axios.post(`${config.public.apiBaseUrl}/public/users/refresh`, {
+        refresh_token: this.refreshToken,
+      })
+
+      console.log('refresh')
+      console.log(response.data.access_token)
+
+      this.accessToken = response.data.access_token
+      this.isLoggedIn = true
+
+      axios.defaults.headers.common['Authorization'] = `Bearer ${this.accessToken}`
+      this.persistToLocalStorage()
+>>>>>>> 73f6604560c0174cbb329409c6c55ab5d40f893e
     },
 
     logout() {
