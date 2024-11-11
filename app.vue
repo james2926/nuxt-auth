@@ -26,6 +26,9 @@
             <li class="nav-item" v-if="authStore.isLoggedIn">
               <button @click="logout" class="nav-link btn btn-link">Logout</button>
             </li>
+            <li class="nav-item">
+              <NuxtLink to="/secured" class="nav-link">Secured</NuxtLink>
+            </li>
           </ul>
         </div>
       </div>
