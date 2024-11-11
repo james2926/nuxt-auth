@@ -51,6 +51,10 @@ export const useAuthStore = defineStore('auth', {
         const response = await axios.post(`${config.public.apiBaseUrl}/public/users/refresh`, {
           refresh_token: this.refreshToken,
         })
+
+        console.log('refresh token')
+        console.log(response.data.access_token)
+
         this.accessToken = response.data.access_token
         this.isLoggedIn = true
         axios.defaults.headers.common['Authorization'] = `Bearer ${this.accessToken}`
