@@ -1,4 +1,3 @@
-// stores/auth.ts
 import { defineStore, createPinia } from 'pinia'
 import { ref, onMounted } from 'vue'
 import { useRuntimeConfig } from '#app'
@@ -48,14 +47,20 @@ export const useAuthStore = defineStore('auth', {
 
     async refresh() {
       const config = useRuntimeConfig()
-      const response = await axios.post(`${config.public.apiBaseUrl}/public/users/refresh`, {
-        refresh_token: this.refreshToken,
-      })
-      this.accessToken = response.data.access_token
-      this.isLoggedIn = true
-
-      axios.defaults.headers.common['Authorization'] = `Bearer ${this.accessToken}`
-      this.persistToLocalStorage()
+      try {
+        const response = await axios.post(`${config.public.apiBaseUrl}/public/users/refresh`, {
+          refresh_token: this.refreshToken,
+        })
+        this.accessToken = response.data.access_token
+        this.isLoggedIn = true
+        axios.defaults.headers.common['Authorization'] = `Bearer ${this.accessToken}`
+        this.persistToLocalStorage()
+        return true
+      } catch (error) {
+        console.error('Token refresh failed:', error)
+        this.logout() // Logout if the refresh token fails
+        return false
+      }
     },
 
     logout() {
@@ -88,5 +93,36 @@ onMounted(() => {
     const authStore = useAuthStore()
     console.log("authStore ==> ", authStore);
     authStore.initializeFromLocalStorage()
+
+    // Set up Axios interceptor for automatic token refresh
+    axios.interceptors.response.use(
+      response => response,
+      async error => {
+        const originalRequest = error.config
+        const authStore = useAuthStore()
+
+        if (error.response && error.response.status === 401 && !originalRequest._retry) {
+          originalRequest._retry = true
+          
+          // Try to refresh the token
+          const refreshSuccess = await authStore.refresh()
+
+          if (refreshSuccess) {
+            // Retry the original request with the new token
+            originalRequest.headers['Authorization'] = `Bearer ${authStore.accessToken}`
+            return axios(originalRequest)
+          } else {
+            // Redirect to login if refresh fails
+            authStore.logout()
+            // Assuming you have a method to redirect to the login page
+            // Replace this with your actual redirection logic, e.g.:
+            window.location.href = '/login'
+            return Promise.reject(error)
+          }
+        }
+
+        return Promise.reject(error)
+      }
+    )
   }
 })

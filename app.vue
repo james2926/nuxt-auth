@@ -39,7 +39,6 @@
   import { ref, onMounted } from 'vue';
   
   const authStore = useAuthStore()
-  // const isLoggedIn = ref('')
 
   onMounted(() => {
     authStore.initializeFromLocalStorage()
